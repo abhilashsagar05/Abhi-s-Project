@@ -1,4 +1,4 @@
-import { PrismaClient, Role, CameraStatus, ViolationStatus } from '@prisma/client';
+import { PrismaClient, Role } from ".prisma/client";
 import "dotenv/config";
 
 const prisma = new PrismaClient();

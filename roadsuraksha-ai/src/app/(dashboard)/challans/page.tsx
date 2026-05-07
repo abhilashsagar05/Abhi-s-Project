@@ -36,6 +36,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { exportToCSV } from "@/lib/export-utils";
 
 const MOCK_CHALLANS = [
   { id: "CHL-9921", plate: "DL 01 AB 1234", amount: 1000, status: "PENDING", date: "2026-05-01", type: "No Helmet" },
@@ -56,7 +57,7 @@ export default function ChallansPage() {
           <p className="text-muted-foreground mt-1">Track payments, issue new fines, and handle appeals.</p>
         </div>
         <div className="flex gap-3">
-          <Button variant="outline" className="border-white/10 hover:bg-white/5 text-white">
+          <Button variant="outline" className="border-white/10 hover:bg-white/5 text-white" onClick={() => exportToCSV(MOCK_CHALLANS, "roadsuraksha_challans")}>
             <Download className="w-4 h-4 mr-2" /> Financial Export
           </Button>
           <Button className="bg-primary hover:bg-primary/90 text-white">

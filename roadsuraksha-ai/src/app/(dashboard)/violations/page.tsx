@@ -44,11 +44,16 @@ import {
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { useViolations } from "@/hooks/use-violations";
+import { exportToCSV } from "@/lib/export-utils";
 
 export default function ViolationsPage() {
   const [search, setSearch] = useState("");
   const [selectedViolation, setSelectedViolation] = useState<any | null>(null);
   const { data: violations, isLoading } = useViolations();
+
+  const handleExport = () => {
+    exportToCSV(violations, "roadsuraksha_violations");
+  };
 
   const filteredViolations = violations.filter((v: any) => 
     v.plateNumber?.toLowerCase().includes(search.toLowerCase()) || 
@@ -63,7 +68,7 @@ export default function ViolationsPage() {
           <p className="text-muted-foreground mt-1">Manage and audit AI-detected traffic violations.</p>
         </div>
         <div className="flex gap-3">
-          <Button variant="outline" className="border-white/10 hover:bg-white/5 text-white">
+          <Button variant="outline" className="border-white/10 hover:bg-white/5 text-white" onClick={handleExport}>
             <Download className="w-4 h-4 mr-2" /> Export CSV
           </Button>
           <Button className="bg-primary hover:bg-primary/90 text-white">

@@ -61,6 +61,22 @@ model Challan {
   violation   Violation @relation(fields: [violationId], references: [id])
 }
 
+model CitizenReport {
+  id            String   @id @default(cuid())
+  reporterName  String
+  reporterEmail String
+  violationType String
+  location      String
+  description   String?
+  evidenceUrl   String
+  status        String   @default("PENDING") // PENDING, APPROVED, REJECTED
+  rewardPoints  Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([reporterEmail])
+}
+
 enum Role {
   SUPER_ADMIN
   TRAFFIC_ADMIN
