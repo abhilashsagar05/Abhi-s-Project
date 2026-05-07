@@ -1,0 +1,83 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  role      Role     @default(CAMERA_OPERATOR)
+  image     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Camera {
+  id         String       @id @default(cuid())
+  name       String
+  location   String
+  city       String
+  lat        Float
+  lng        Float
+  status     CameraStatus @default(ONLINE)
+  lastPing   DateTime     @default(now())
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  violations Violation[]
+}
+
+model Violation {
+  id          String          @id @default(cuid())
+  type        String
+  confidence  Float
+  evidenceUrl String
+  plateNumber String?
+  location    String
+  timestamp   DateTime        @default(now())
+  status      ViolationStatus @default(PENDING)
+  cameraId    String
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  challan     Challan?
+  camera      Camera          @relation(fields: [cameraId], references: [id])
+
+  @@index([cameraId])
+  @@index([plateNumber])
+}
+
+model Challan {
+  id          String    @id @default(cuid())
+  amount      Float
+  status      String
+  dueDate     DateTime
+  paidAt      DateTime?
+  violationId String    @unique
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  violation   Violation @relation(fields: [violationId], references: [id])
+}
+
+enum Role {
+  SUPER_ADMIN
+  TRAFFIC_ADMIN
+  CAMERA_OPERATOR
+  ANALYST
+}
+
+enum CameraStatus {
+  ONLINE
+  OFFLINE
+  MAINTENANCE
+}
+
+enum ViolationStatus {
+  PENDING
+  REVIEWED
+  REJECTED
+  CHALLAN_ISSUED
+  PAID
+}
