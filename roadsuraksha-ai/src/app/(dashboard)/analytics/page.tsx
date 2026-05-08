@@ -29,6 +29,9 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useViolations } from "@/hooks/use-violations";
+import { useStats } from "@/hooks/use-stats";
+import { useEffect, useState } from "react";
 import { MOCK_ANALYTICS } from "@/lib/mock-data";
 import { cn } from "@/lib/utils";
 
@@ -42,6 +45,17 @@ const hourlyData = [
 ];
 
 export default function AnalyticsPage() {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return <div className="h-screen flex items-center justify-center">
+      <div className="w-8 h-8 border-4 border-primary/30 border-t-primary rounded-full animate-spin" />
+    </div>;
+  }
   return (
     <div className="space-y-8 pb-10">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">

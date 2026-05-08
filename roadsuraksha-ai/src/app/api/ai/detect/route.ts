@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
 import { registerViolation } from "@/lib/ai-engine";
+import { cookies } from "next/headers";
+
+export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
+  await cookies();
   try {
     const body = await req.json();
     

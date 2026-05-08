@@ -40,10 +40,22 @@ import { VIOLATION_TYPES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { useViolations } from "@/hooks/use-violations";
 import { useStats } from "@/hooks/use-stats";
+import { useEffect, useState } from "react";
 
 export default function DashboardPage() {
   const { data: recentViolations } = useViolations();
   const { stats } = useStats();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return <div className="h-screen flex items-center justify-center">
+      <div className="w-8 h-8 border-4 border-primary/30 border-t-primary rounded-full animate-spin" />
+    </div>;
+  }
 
   return (
     <div className="space-y-8 pb-10">
